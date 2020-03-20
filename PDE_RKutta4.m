@@ -1,4 +1,4 @@
-function u = PDE_EulerExp(fun, u0, t0, t1, n)
+function u = PDE_RKutta4(fun, u0, t0, t1, n)
 % Input arguments:  
 %      fun  the name of the right-hand-side EDO function
 %      t0   the initial time
@@ -14,7 +14,11 @@ function u = PDE_EulerExp(fun, u0, t0, t1, n)
     h = (t1 - t0)/n;
     u(1) = u0;
     for i=1:n
-        u(i+1) = u(i) + h*fun(t(i), u(i));
+        k1 = h*fun(t(i), u(i));
+        k2 = h*fun(t(i) + h/2, u(i) + k1/2);
+        k3 = h*fun(t(i) + h/2, u(i) + k2/2);
+        k4 = h*fun(t(i) + h, u(i) + k3);
+        u(i+1) = u(i) + (k1 + 2*k2 + 2*k3 + k4)/6;
     end
 end
 
